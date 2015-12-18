@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/evertras/protonplayground/issues"
   },
-  "homepage": "https://github.com/evertras/protonplayground"
+  "homepage": "https://github.com/evertras/protonplayground",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
 }
