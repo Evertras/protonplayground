@@ -1,7 +1,43 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var proton = require('./proton/proton-1.0.1.js');
+require('./proton/proton-1.0.1.js');
 
-console.log("Yep");
+var canvasElement = document.getElementById('main');
+var canvasContext = canvasElement.getContext('2d');
+var canvas = canvasContext.canvas;
+
+var proton = new Proton();
+var emitter = new Proton.Emitter();
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+//set Rate
+emitter.rate = new Proton.Rate(Proton.getSpan(1, 2), 0.1);
+//add Initialize
+emitter.addInitialize(new Proton.Radius(2, 4));
+emitter.addInitialize(new Proton.Life(120));
+emitter.addInitialize(new Proton.Velocity(0.1, Proton.getSpan(0, 360), 'polar'));
+//add Behaviour
+emitter.addBehaviour(new Proton.Color('ff0000', '0000ff'));
+emitter.addBehaviour(new Proton.Alpha(1, 0));
+emitter.addBehaviour(new Proton.Collision(emitter));
+//set emitter position
+emitter.p.x = canvas.width / 2;
+emitter.p.y = canvas.height / 2;
+emitter.emit();
+//add emitter to the proton
+proton.addEmitter(emitter);
+// add canvas renderer
+var renderer = new Proton.Renderer('canvas', proton, canvasElement);
+renderer.start();
+
+tick();
+
+function tick() {
+  requestAnimationFrame(tick);
+  proton.update();
+}
+
 
 },{"./proton/proton-1.0.1.js":2}],2:[function(require,module,exports){
 /*!
